@@ -1,40 +1,44 @@
-
-import java.util.Scanner; // <-- This is required for Scanner to work
-
+import java.util.Scanner;
+import java.util.Stack;
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter a string: ");
-        String input = scanner.nextLine();
+        System.out.print("Enter a string to check: ");
+        String originalString = scanner.nextLine();
 
-        // Convert string to character array
-        char[] characters = input.toCharArray();
+        boolean result = isPalindromeUsingStack(originalString);
 
-        int start = 0;
-        int end = characters.length - 1;
-
-        boolean isPalindrome = true;
-
-        // Two-pointer comparison
-        while (start < end) {
-            if (characters[start] != characters[end]) {
-                isPalindrome = false;
-                break;
-            }
-            start++;
-            end--;
-        }
-
-        // Display result
-        if (isPalindrome) {
-            System.out.println("Result: The given string is a Palindrome.");
+        if (result) {
+            System.out.println("Result: '" + originalString + "' IS a palindrome.");
         } else {
-            System.out.println("Result: The given string is NOT a Palindrome.");
+            System.out.println("Result: '" + originalString + "' is NOT a palindrome.");
         }
 
         scanner.close();
+    }
+
+    public static boolean isPalindromeUsingStack(String str) {
+        // Optional: Clean the string by removing spaces and converting to lowercase
+        // for a more robust palindrome check (e.g., "Race car" -> "racecar")
+        String cleanStr = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        Stack<Character> stack = new Stack<>();
+
+        // Step 1: Push characters into stack
+        for (int i = 0; i < cleanStr.length(); i++) {
+            stack.push(cleanStr.charAt(i));
+        }
+
+        for (int i = 0; i < cleanStr.length(); i++) {
+            char poppedChar = stack.pop();
+
+            if (poppedChar != cleanStr.charAt(i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
